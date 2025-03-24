@@ -12,7 +12,7 @@ namespace Projeto_Angular.Application.Dtos
         public decimal Preco { get; set; }
         public String DataInicio { get; set; }
         public String DataFim { get; set; }
-        public int Quantidate { get; set; }
+        public int Quantidade { get; set; }
         public int EventoId { get; set; }
         public EventoDto Evento { get; set; }
     }

@@ -6,7 +6,7 @@ export interface Lote {
     preco: number;
     dataInicio: Date;
     dataFim: Date;
-    quantidate: number;
+    quantidade: number;
     eventoId: number;
     evento: Evento;
 }

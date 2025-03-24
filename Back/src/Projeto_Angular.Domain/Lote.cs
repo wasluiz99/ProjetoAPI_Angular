@@ -12,7 +12,7 @@ namespace Projeto_Angular.Domain
         public decimal Preco { get; set; }
         public DateTime DataInicio { get; set; }
         public DateTime DataFim { get; set; }
-        public int Quantidate { get; set; }
+        public int Quantidade { get; set; }
         public int EventoId { get; set; }
         public Evento Evento { get; set; }
     }

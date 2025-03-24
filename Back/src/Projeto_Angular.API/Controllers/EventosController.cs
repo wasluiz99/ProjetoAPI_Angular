@@ -119,9 +119,9 @@ namespace Projeto_Angular.API.Controllers
         {
             try
             {
-                return await _eventoService.DeleteEvento(id) ? 
-                        Ok( new { message = "Deletado" }) : 
-                        BadRequest("Evento não deletado");
+                return await _eventoService.DeleteEvento(id) 
+                        ? Ok( new { message = "Deletado" }) 
+                        : throw new Exception("Ocorreu um problema não específico ao tentar deletar o Lote");
             }
             catch (Exception ex)
             {
