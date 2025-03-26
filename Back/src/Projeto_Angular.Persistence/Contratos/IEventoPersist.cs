@@ -10,9 +10,9 @@ namespace Projeto_Angular.Persistence.Contratos
     {
 
         //EVENTOS
-        Task<Evento[]> GetAllEventosByTemaAsync(string tema, bool includePalestrantes);
-        Task<Evento[]> GetAllEventosAsync(bool includePalestrantes);
-        Task<Evento> GetEventoByIdAsync(int EventoId, bool includePalestrantes);
+        Task<Evento[]> GetAllEventosByTemaAsync(int userId, string tema, bool includePalestrantes);
+        Task<Evento[]> GetAllEventosAsync(int userId, bool includePalestrantes);
+        Task<Evento> GetEventoByIdAsync(int userId, int EventoId, bool includePalestrantes);
 
     }
 }
