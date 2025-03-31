@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { AccountService } from '@app/services/account.service';
 
 @Component({
   selector: 'app-nav',
@@ -8,13 +9,35 @@ import { Router } from '@angular/router';
 })
 export class NavComponent implements OnInit {
   isCollapsed = true;
-  constructor(private router: Router) { }
+  public usuarioLogado = false;
+
+  constructor(private router: Router,
+              private accountService: AccountService) {
+
+  router.events.subscribe(
+    (val) => {
+      if(val instanceof NavigationEnd) {
+        this.accountService.currentUser$.subscribe(
+          (value) => this.usuarioLogado = value != null
+        )
+        console.log(this.usuarioLogado);
+      }
+    }
+  )
+
+  }
+              
 
   ngOnInit(): void {
   }
 
+  logout(): void {
+    this.accountService.logout();
+    this.router.navigateByUrl('/user/login');
+  }
+
   showMenu(): boolean {
-    return this.router.url != '/user/login';
+    return this.router.url !== '/user/login';
   }
 
 }

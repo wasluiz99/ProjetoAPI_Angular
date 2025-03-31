@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Projeto_Angular.Application.Contratos;
 using Projeto_Angular.Application.Dtos;
 using Projeto_Angular.Domain.identity;
@@ -45,16 +46,17 @@ namespace Projeto_Angular.Application
             }
         }
 
-        public async Task<UserDto> CreteAccountAsync(UserDto userDto)
+        public async Task<UserUpdateDto> CreteAccountAsync(UserDto userDto)
         {
             try
             {
                 var user = _mapper.Map<User>(userDto);
+
                 var result = await _userManager.CreateAsync(user, userDto.Password);
 
                 if(result.Succeeded)
                 {
-                    var userToReturn = _mapper.Map<UserDto>(user);
+                    var userToReturn = _mapper.Map<UserUpdateDto>(user);
 
                     return userToReturn;
                 }
@@ -93,10 +95,14 @@ namespace Projeto_Angular.Application
                 var user = await _userPersist.GetUserByNameAsync(userUpdateDto.UserName);
                 if(user == null) return null;
 
+                userUpdateDto.Id = user.Id;
+
                 _mapper.Map(userUpdateDto, user);
 
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var result = await _userManager.ResetPasswordAsync(user, token, userUpdateDto.Password);
+                if(userUpdateDto.Password != null){
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    await _userManager.ResetPasswordAsync(user, token, userUpdateDto.Password);
+                }
 
                 _userPersist.Update<User>(user);
 

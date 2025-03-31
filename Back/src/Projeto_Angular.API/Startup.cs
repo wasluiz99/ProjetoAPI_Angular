@@ -144,12 +144,17 @@ namespace Projeto_Angular.API
 
             app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+            //UseCors() SEMPRE! antes de:
+            // UseAuthentication()
+            // UseAuthorization()
+            // MapControllers()
 
             app.UseCors(x => x.AllowAnyHeader()
-                              .AllowAnyMethod()
-                              .AllowAnyOrigin());
+                  .AllowAnyMethod()
+                  .AllowAnyOrigin());
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseStaticFiles(new StaticFileOptions(){
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Resources")),
