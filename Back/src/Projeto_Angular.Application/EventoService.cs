@@ -7,6 +7,7 @@ using Projeto_Angular.Application.Contratos;
 using Projeto_Angular.Application.Dtos;
 using Projeto_Angular.Domain;
 using Projeto_Angular.Persistence.Contratos;
+using Projeto_Angular.Persistence.Models;
 
 namespace Projeto_Angular.Application
 {
@@ -101,32 +102,19 @@ namespace Projeto_Angular.Application
             }
         }
 
-        public async Task<EventoDto[]> GetAllEventosAsync(int userId, bool includePalestrantes = false)
+        public async Task<PageList<EventoDto>> GetAllEventosAsync(int userId, PageParams pageParams, bool includePalestrantes = false)
         {
             try
             {
-                var eventos = await _eventoPersist.GetAllEventosAsync(userId, includePalestrantes);
+                var eventos = await _eventoPersist.GetAllEventosAsync(userId, pageParams, includePalestrantes);
                 if(eventos == null) return null;
 
-                var resultados = _mapper.Map<EventoDto[]>(eventos);
+                var resultados = _mapper.Map<PageList<EventoDto>>(eventos);
 
-                return resultados;
-            }
-            catch (Exception ex)
-            {
-                
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<EventoDto[]> GetAllEventosByTemaAsync(int userId, string tema, bool includePalestrantes = false)
-        {
-            try
-            {
-                var eventos = await _eventoPersist.GetAllEventosByTemaAsync(userId, tema, includePalestrantes);
-                if(eventos == null) return null;
-
-                var resultados = _mapper.Map<EventoDto[]>(eventos);
+                resultados.CurrentPage = eventos.CurrentPage;
+                resultados.TotalPages = eventos.TotalPages;
+                resultados.PageSize = eventos.PageSize;
+                resultados.TotalCount = eventos.TotalCount;
 
                 return resultados;
             }
